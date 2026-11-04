@@ -8,15 +8,9 @@ import path from 'path';
 const REPOS = [
     {
         owner: 'impermeable',
-        repo: 'waterproof-exercise-sheets',
-        branch: 'main',
-        title: 'Waterproof Exercise Sheets'
-    },
-    {
-        owner: 'impermeable',
-        repo: 'introduction-to-proof-sheets',
-        branch: 'main',
-        title: 'Introduction To Proof Sheets'
+        repo: 'analysis-rug',
+        branch: 'fix/rocq-9.0',
+        title: 'Analysis RUG'
     }
 ];
 
@@ -51,8 +45,8 @@ async function updateDropdown() {
                     return match ? parseInt(match[1], 10) : 0;
                 };
 
-                const aCh = getNum(a.path, /(?:ch|lecture)(\d+)/i);
-                const bCh = getNum(b.path, /(?:ch|lecture)(\d+)/i);
+                const aCh = getNum(a.path, /(?:ch|lecture|hw)(\d+)/i);
+                const bCh = getNum(b.path, /(?:ch|lecture|hw)(\d+)/i);
 
                 if (aCh !== bCh) return aCh - bCh;
 
@@ -73,13 +67,14 @@ async function updateDropdown() {
                 let basename = path.basename(file.path);
                 let prettyName = basename;
                 
-                if (basename === 'waterproof_tutorial.mv') {
+                if (basename === 'waterproof_tutorial.mv' || basename === 'tutorial.mv') {
                     prettyName = 'Waterproof Tutorial';
                 } else {
                     prettyName = prettyName
                         .replace('.mv', '')
                         .replace(/^ch(\d+)_/i, 'Chapter $1: ')
                         .replace(/^sheet(\d+)_/i, 'Sheet $1: ')
+                        .replace(/^hw(\d+)_/i, 'Homework $1: ')
                         .replace(/_/g, ' ');
                         
                     prettyName = prettyName.replace(/\b\w/g, c => c.toUpperCase());
